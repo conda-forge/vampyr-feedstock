@@ -2,7 +2,7 @@
 {% set version = '0.1.0rc0' %}
 {% set sha256 = '62d28a8c5cf61d9ef82ab2d96f193a2fdf11c7dabea88736b55608f71aeb9f8c' %}
 {% set pyver = PY_VER.replace(".", "") %}
-{% set build = 0 %}
+{% set build = 1 %}
 
 package:
   name: {{ name|lower }}
@@ -43,8 +43,6 @@ test:
     - ls -l $SP_DIR/vampyr
     - test -f $SP_DIR/vampyr/_vampyr*.so
     # Inspect linkage
-    - conda inspect linkages --show-files --groupby=dependency $PKG_NAME
-    - conda inspect objects -p $PREFIX $PKG_NAME                          # [osx]
     - ldd -v $SP_DIR/vampyr/_vampyr*.so                                   # [linux]
     - otool -L $SP_DIR/vampyr/_vampyr*.so                                 # [osx]
 

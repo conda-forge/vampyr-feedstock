@@ -4,7 +4,7 @@ CXXFLAGS="${CXXFLAGS//-mtune=haswell}"
 
 # configure
 cmake \
-  -H${SRC_DIR} \
+  -S${SRC_DIR} \
   -Bbuild \
   -GNinja \
   -DCMAKE_INSTALL_PREFIX=${PREFIX} \
@@ -13,12 +13,5 @@ cmake \
   -DPYMOD_INSTALL_LIBDIR="${SP_DIR#$PREFIX/lib}"
 
 
-# build
-cd build
-cmake --build . -- -j${CPU_COUNT} -v -d stats
-
-# test
-ctest -j${CPU_COUNT} --output-on-failure --verbose
-
-# install
-cmake --build . --target install -- -j${CPU_COUNT}
+# build and install (testing is done later)
+cmake --build build --parallel ${CPU_COUNT} --target install -- -v -d stats

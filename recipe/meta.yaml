@@ -2,7 +2,7 @@
 {% set version = '0.1.0rc0' %}
 {% set sha256 = '62d28a8c5cf61d9ef82ab2d96f193a2fdf11c7dabea88736b55608f71aeb9f8c' %}
 {% set pyver = PY_VER.replace(".", "") %}
-{% set build = 1 %}
+{% set build = 2 %}
 
 package:
   name: {{ name|lower }}
@@ -25,17 +25,14 @@ requirements:
     - {{ compiler('cxx') }}
     - pybind11 =*=*py{{ pyver }}*
     - ninja
-    - pytest
-    - numpy
   host:
     - mrcpp
     - python
-  run:
-    - numpy
 
 test:
   requires:
     - numpy
+    - pytest
   imports:
     - vampyr
   commands:

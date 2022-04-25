@@ -3,7 +3,7 @@ CXXFLAGS="${CXXFLAGS//-march=nocona}"
 CXXFLAGS="${CXXFLAGS//-mtune=haswell}"
 
 # configure
-cmake \
+cmake ${CMAKE_ARGS} \
   -S${SRC_DIR} \
   -Bbuild \
   -GNinja \

@@ -2,7 +2,7 @@
 {% set version = '0.2rc0' %}
 {% set sha256 = '587904da160c22258d9f1d7c386711676924cc2a916727606c7346a56e49b608' %}
 {% set pyver = PY_VER.replace(".", "") %}
-{% set build = 2 %}
+{% set build = 3 %}
 
 package:
   name: {{ name|lower }}
@@ -42,8 +42,11 @@ test:
     - ls -l $SP_DIR/vampyr
     - test -f $SP_DIR/vampyr/_vampyr*.so
     # Inspect linkage
-    - ldd -v $SP_DIR/vampyr/_vampyr*.so                                   # [linux]
-    - otool -L $SP_DIR/vampyr/_vampyr*.so                                 # [osx]
+    - ldd -v $SP_DIR/vampyr/_vampyr*.so    # [linux]
+    - otool -L $SP_DIR/vampyr/_vampyr*.so  # [osx]
+    # run the tests
+    - export OMP_NUM_THREADS=$CPU_COUNT    # [unix]                           
+    - $PYTHON -m pytest --capture=no --log-cli-level=INFO --pyargs vampyr
 
 outputs:
   - name: vampyr

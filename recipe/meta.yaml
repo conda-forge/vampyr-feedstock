@@ -2,7 +2,7 @@
 {% set version = '0.2rc0' %}
 {% set sha256 = '587904da160c22258d9f1d7c386711676924cc2a916727606c7346a56e49b608' %}
 {% set pyver = PY_VER.replace(".", "") %}
-{% set build = 3 %}
+{% set build = 4 %}
 
 package:
   name: {{ name|lower }}

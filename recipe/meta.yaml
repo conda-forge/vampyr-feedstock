@@ -1,7 +1,6 @@
 {% set name = 'vampyr' %}
 {% set version = '0.2rc0' %}
 {% set sha256 = '587904da160c22258d9f1d7c386711676924cc2a916727606c7346a56e49b608' %}
-{% set pyver = PY_VER.replace(".", "") %}
 {% set build = 5 %}
 
 package:
@@ -15,35 +14,35 @@ source:
 build:
   number: {{ build }}
   skip: true  # [win]
-  binary_relocation: true
   run_exports:
     - {{ pin_subpackage('vampyr', max_pin='x.x') }}
 
 requirements:
   build:
-    - python                                 # [build_platform != target_platform]
-    - cross-python_{{ target_platform }}     # [build_platform != target_platform]
+    - python  # [build_platform != target_platform]
+    - cross-python_{{ target_platform }}  # [build_platform != target_platform]
+    - pybind11  # [build_platform != target_platform]  
     - cmake >=3.17
     - {{ compiler('cxx') }}
-    - pybind11 =*=*py{{ pyver }}*
     - ninja
   host:
     - mrcpp
     - python
+    - pybind11
 
 test:
   requires:
     - numpy
     - pytest
+    - pip
   imports:
     - vampyr
   commands:
-    # Verify existence and execution
-    - ls -l $SP_DIR/vampyr
-    - test -f $SP_DIR/vampyr/_vampyr*.so
+    - pip check
     # Inspect linkage
-    - ldd -v $SP_DIR/vampyr/_vampyr*.so    # [linux]
-    - otool -L $SP_DIR/vampyr/_vampyr*.so  # [osx]
+    - export PYLIB_EXT=`$PYTHON -c 'from numpy import distutils; print(distutils.misc_util.get_shared_lib_extension(is_python_ext=True))'`  # [unix]
+    - ldd -v $SP_DIR/vampyr/_vampyr$PYLIB_EXT  # [linux]
+    - otool -L $SP_DIR/vampyr/_vampyr$PYLIB_EXT  # [osx]
     # run the tests
     - export OMP_NUM_THREADS=$CPU_COUNT    # [unix]                           
     - $PYTHON -m pytest --capture=no --log-cli-level=INFO --pyargs vampyr

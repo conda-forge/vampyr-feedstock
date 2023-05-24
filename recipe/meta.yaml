@@ -1,7 +1,7 @@
-{% set name = 'vampyr' %}
-{% set version = '0.2rc0' %}
-{% set sha256 = '587904da160c22258d9f1d7c386711676924cc2a916727606c7346a56e49b608' %}
-{% set build = 5 %}
+{% set name = "vampyr" %}
+{% set version = "1.0rc0" %}
+{% set sha256 = "ec8ecdd1af4b1478b596af25c7e5aed4eb00752fa1f9c7760fe1a6c8807619de" %}
+{% set build = 0 %}
 
 package:
   name: {{ name|lower }}

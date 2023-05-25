@@ -26,7 +26,7 @@ requirements:
     - {{ compiler('cxx') }}
     - ninja
   host:
-    - mrcpp
+    - mrcpp >=1.5.0
     - python
     - pybind11
 
@@ -40,9 +40,8 @@ test:
   commands:
     - pip check
     # Inspect linkage
-    - export PYLIB_EXT=`$PYTHON -c 'from numpy import distutils; print(distutils.misc_util.get_shared_lib_extension(is_python_ext=True))'`  # [unix]
-    - ldd -v $SP_DIR/vampyr/_vampyr$PYLIB_EXT  # [linux]
-    - otool -L $SP_DIR/vampyr/_vampyr$PYLIB_EXT  # [osx]
+    - ldd -v $SP_DIR/vampyr/_vampyr*.so  # [linux]
+    - otool -L $SP_DIR/vampyr/_vampyr*.so  # [osx]
     # run the tests
     - export OMP_NUM_THREADS=$CPU_COUNT    # [unix]                           
     - $PYTHON -m pytest --capture=no --log-cli-level=INFO --pyargs vampyr

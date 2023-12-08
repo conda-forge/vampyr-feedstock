@@ -1,7 +1,7 @@
 {% set name = "vampyr" %}
-{% set version = "1.0rc0" %}
-{% set sha256 = "ec8ecdd1af4b1478b596af25c7e5aed4eb00752fa1f9c7760fe1a6c8807619de" %}
-{% set build = 1 %}
+{% set version = "1.0rc1" %}
+{% set sha256 = "e709359033b27d166d5d60827552a92d8d2e73c3c9f7d54ec7ef562c9f497042" %}
+{% set build = 0 %}
 
 package:
   name: {{ name|lower }}
@@ -27,8 +27,10 @@ requirements:
     - ninja
     - llvm-openmp  # [osx or win]
     - libgomp  # [linux]
+    # needed when not using the released MRCPP
+    - eigen
   host:
-    - mrcpp >=1.5.0
+    #- mrcpp >=1.5.0
     - python
     - pybind11
     - pybind11-abi
@@ -52,11 +54,6 @@ test:
     # run the tests
     - export OMP_NUM_THREADS=$CPU_COUNT  # [unix]                           
     - $PYTHON -m pytest --capture=no --log-cli-level=INFO --pyargs vampyr  # [python_impl != "pypy"]
-
-outputs:
-  - name: vampyr
-    files:
-      - {{ SP_DIR }}/vampyr
 
 about:
   home: https://github.com/MRChemSoft/vampyr

@@ -1,4 +1,9 @@
-BUILD_TYPE="Release"
+#!/usr/bin/env bash
+
+set -ex
+
+export CXX=$(basename ${CXX})
+
 CXXFLAGS="${CXXFLAGS//-march=nocona}"
 CXXFLAGS="${CXXFLAGS//-mtune=haswell}"
 # needed for macOS see here: https://conda-forge.org/docs/maintainer/knowledge_base.html#newer-c-features-with-old-sdk
@@ -13,15 +18,17 @@ fi
 
 # configure
 cmake ${CMAKE_ARGS} ${ARCH_ARGS} \
-  -S${SRC_DIR} \
+  -S"${SRC_DIR}" \
   -Bbuild \
   -GNinja \
-  -DCMAKE_INSTALL_PREFIX=${PREFIX} \
-  -DCMAKE_BUILD_TYPE=${BUILD_TYPE} \
-  -DENABLE_ARCH_FLAGS=OFF \
-  -DCMAKE_CXX_COMPILER=${CXX} \
-  -DPYMOD_INSTALL_FULLDIR="${SP_DIR#$PREFIX/}/vampyr"
-
+  -DCMAKE_BUILD_TYPE:STRING=Release \
+  -DCMAKE_INSTALL_PREFIX:PATH="${PREFIX}" \
+  -DCMAKE_CXX_COMPILER:STRING="${CXX}" \
+  -DCMAKE_FIND_FRAMEWORK:STRING=NEVER \
+  -DCMAKE_FIND_APPBUNDLE:STRING=NEVER \
+  -DPython_EXECUTABLE:STRING="${PYTHON}" \
+  -DENABLE_OPENMP:BOOL=ON \
+  -DENABLE_ARCH_FLAGS:BOOL=OFF \
 
 # build and install (testing is done later)
 cmake --build build --parallel ${CPU_COUNT} --target install -- -v -d stats

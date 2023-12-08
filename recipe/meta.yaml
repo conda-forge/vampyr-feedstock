@@ -25,10 +25,15 @@ requirements:
     - cmake >=3.17
     - {{ compiler('cxx') }}
     - ninja
+    - llvm-openmp  # [osx or win]
+    - libgomp  # [linux]
   host:
     - mrcpp >=1.5.0
     - python
     - pybind11
+    - pybind11-abi
+  run:
+    - python
 
 test:
   requires:
@@ -38,13 +43,15 @@ test:
   imports:
     - vampyr
   commands:
-    - pip check
+    # Verify Python extension library
+    - test -f $SP_DIR/vampyr/_vampyr*.so  # [not win]
     # Inspect linkage
-    - ldd -v $SP_DIR/vampyr/_vampyr*.so  # [linux]
+    - ldd -v $SP_DIR/vampyr/_vampyr*.so  # [linux64]
     - otool -L $SP_DIR/vampyr/_vampyr*.so  # [osx]
+    - pip check
     # run the tests
-    - export OMP_NUM_THREADS=$CPU_COUNT    # [unix]                           
-    - $PYTHON -m pytest --capture=no --log-cli-level=INFO --pyargs vampyr
+    - export OMP_NUM_THREADS=$CPU_COUNT  # [unix]                           
+    - $PYTHON -m pytest --capture=no --log-cli-level=INFO --pyargs vampyr  # [python_impl != "pypy"]
 
 outputs:
   - name: vampyr

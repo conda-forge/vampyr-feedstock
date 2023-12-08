@@ -20,7 +20,7 @@ cmake ${CMAKE_ARGS} ${ARCH_ARGS} \
   -DCMAKE_BUILD_TYPE=${BUILD_TYPE} \
   -DENABLE_ARCH_FLAGS=OFF \
   -DCMAKE_CXX_COMPILER=${CXX} \
-  -DPYMOD_INSTALL_FULLDIR="${SP_DIR#$PREFIX/lib}"
+  -DPYMOD_INSTALL_FULLDIR="${SP_DIR#$PREFIX/}/vampyr"
 
 
 # build and install (testing is done later)

@@ -1,7 +1,7 @@
 {% set name = "vampyr" %}
 {% set version = "1.0rc1" %}
 {% set sha256 = "e709359033b27d166d5d60827552a92d8d2e73c3c9f7d54ec7ef562c9f497042" %}
-{% set build = 1 %}
+{% set build = 2 %}
 
 package:
   name: {{ name|lower }}
@@ -24,6 +24,7 @@ requirements:
     - pybind11  # [build_platform != target_platform]  
     - cmake >=3.17
     - {{ compiler('cxx') }}
+    - {{ stdlib("c") }}
     - ninja
     - llvm-openmp  # [osx or win]
     - libgomp  # [linux]
